@@ -10,12 +10,13 @@ warnings.filterwarnings('ignore')
 
 print('Enter the Bandwidths')
 arr=list(map(int,input().split()))
+arr.sort()
 speeds=np.array(arr)
 
 # Step 2: Initialize number of clusters
 
 min_transfers = 1  # Minimum number of transfers sender can handle
-max_transfers = 3  # Maximum number of transfers sender can handle
+max_transfers = 3  # Maximum number of transfers sender can handle (Based on Cloud Service Provider's RAM Specs)
 k = min(max(len(speeds) // max_transfers, 1), len(speeds) // min_transfers)  # Compute number of clusters
 print('K Value is: ',k)
 
@@ -32,9 +33,14 @@ kmeans = KMeans(n_clusters=k).fit(X.reshape(-1, 1))  # Apply KMeans clustering
 
 labels = kmeans.predict(X.reshape(-1, 1))  # Assign labels to each data point
 
-print('\nLabels:')
+#Sorting the Labels
 labels=np.sort(labels)
-print(np.sort(labels))
+
+#Printing the Clusters and the Bandwidths
+
+print('\nThe Clusters!\n')
+for i in range(len(arr)):
+    print(f"{arr[i]}\t\tGroup: {labels[i]}")
 
 # Step 6: Calculate average network speed/bandwidth for each cluster
 
